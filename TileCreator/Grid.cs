@@ -2,7 +2,7 @@
 
 namespace TileCreator
 {
-  class Grid
+  class Grid : IGrid
   {
     public uint Width { get; set; }
     public uint Height { get; set; }

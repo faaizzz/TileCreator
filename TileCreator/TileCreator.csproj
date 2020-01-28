@@ -45,6 +45,9 @@
   <ItemGroup>
     <Compile Include="Cell.cs" />
     <Compile Include="Grid.cs" />
+    <Compile Include="ICell.cs" />
+    <Compile Include="IGrid.cs" />
+    <Compile Include="ITileManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TileManager.cs" />

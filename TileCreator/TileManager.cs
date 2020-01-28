@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace TileCreator
 {
-  class TileManager
+  class TileManager : ITileManager
   {
     public enum Position
     {
