@@ -6,7 +6,7 @@ namespace TileCreator
 {
   partial class Program
   {
-    static byte moveCount = 0, tileCount = 1;
+    static byte moveCount = 0, tileCount = 0;
     static uint gridwidth, gridHeight;
     static IList<Cell> occupiedCells;
     static void Main(string[] args)
@@ -32,6 +32,12 @@ namespace TileCreator
         gridHeight = Convert.ToUInt32(Console.ReadLine());
         //Console.WriteLine("Width is " + gridwidth + " and gridHeight is " + gridHeight);
 
+        if(gridwidth <= 0 || gridHeight <= 0)
+        {
+          Console.WriteLine("Grid height and width must be an integer value greater than zero.");
+          return;
+        }
+
         Console.WriteLine("Enter the size of the starting location => ");
         Console.Write("Row : ");
         sRow = Convert.ToUInt32(Console.ReadLine());
@@ -41,6 +47,8 @@ namespace TileCreator
         tilePosition = new Cell(sRow, sColumn);
 
         occupiedCells.Add(new Cell(tilePosition.Row, tilePosition.Column));
+
+        tileCount++;
         Console.WriteLine("=> Created tile #" + tileCount + " at Row " + tilePosition.Row + ", Col " + tilePosition.Column);
         moveCount++;
         Console.WriteLine("Current tile at Row " + tilePosition.Row + ", Col " + tilePosition.Column);
@@ -49,14 +57,22 @@ namespace TileCreator
         {
           foreach(var item in movementSequence)
           {
-            if(tileCount > 25)
+            if(moveCount > 25)
             {
-              Console.WriteLine("\nTraversal is complete");
+              Console.WriteLine("\nTraversal is complete\n");
               break;
             }
             Console.WriteLine("\nAttempting to move " + item.ToString());
 
-            TileManager(item, tilePosition, occupiedCells);
+            tilePosition = TileManager(item, tilePosition, occupiedCells);
+            if (ValidateTraversal(tilePosition, gridwidth, gridHeight))
+            {
+              CreateTile(tilePosition);
+            }
+            else
+            {
+              return;
+            }
             Console.WriteLine("Current tile at Row " + tilePosition.Row + ", Col " + tilePosition.Column);
           }
         }
@@ -81,9 +97,10 @@ namespace TileCreator
       }
       finally
       {
-        Console.WriteLine("==========================================");
-        Console.WriteLine("Execution Completed. Press Any Key To Exit");
-        Console.WriteLine("==========================================");
+        if(tileCount > 0)
+        {
+          Console.WriteLine("Active Count = " + tileCount);
+        }
         Console.ReadKey();
       }
     }
@@ -93,83 +110,39 @@ namespace TileCreator
       bool isValid = (tilePosition.Column > 0 && tilePosition.Row > 0 && tilePosition.Column < gridwidth &&  tilePosition.Row < gridHeight);
       if(!isValid)
       {
-        Console.WriteLine("\nUnable to traverse the tile any further");
+        Console.WriteLine("\nUnable to traverse the tile any further\n");
       }
       return isValid;
     }
 
     public static bool ValidateOccupiedCells(Cell tilePosition)
     {
-      return occupiedCells.Any(x => x.Column == tilePosition.Column && x.Row == tilePosition.Row);
+      return !occupiedCells.Any(x => x.Column == tilePosition.Column && x.Row == tilePosition.Row);
     }
 
-    public static void TileManager(Position item, Cell tilePosition, IList<Cell> occupiedCells)
+    public static Cell TileManager(Position item, Cell tilePosition, IList<Cell> occupiedCells)
     {
+      moveCount++;
       switch (item)
       {
         case Position.Right:
           {
-            moveCount++;
             tilePosition.Column++;
-
-            if (ValidateTraversal(tilePosition, gridwidth, gridHeight))
-            {
-              tileCount++;
-              occupiedCells.Add(new Cell(tilePosition.Row, tilePosition.Column));
-              Console.WriteLine("=> Created tile #" + tileCount + " at Row " + tilePosition.Row + ", Col " + tilePosition.Column);
-            }
-            else
-            {
-              return;
-            }
             break;
           }
         case Position.Left:
           {
-            moveCount++;
             tilePosition.Column--;
-            if (ValidateTraversal( tilePosition, gridwidth, gridHeight))
-            {
-              tileCount++;
-              occupiedCells.Add(new Cell(tilePosition.Row, tilePosition.Column));
-              Console.WriteLine("=> Created tile #" + tileCount + " at Row " + tilePosition.Row + ", Col " + tilePosition.Column);
-            }
-            else
-            {
-              return;
-            }
             break;
           }
         case Position.Up:
           {
-            moveCount++;
             tilePosition.Row--;
-            if (ValidateTraversal(tilePosition, gridwidth, gridHeight))
-            {
-              tileCount++;
-              occupiedCells.Add(new Cell(tilePosition.Row, tilePosition.Column));
-              Console.WriteLine("=> Created tile #" + tileCount + " at Row " + tilePosition.Row + ", Col " + tilePosition.Column);
-            }
-            else
-            {
-              return;
-            }
             break;
           }
         case Position.Down:
           {
-            moveCount++;
             tilePosition.Row++;
-            if (ValidateTraversal( tilePosition, gridwidth, gridHeight))
-            {
-              tileCount++;
-              occupiedCells.Add(new Cell(tilePosition.Row, tilePosition.Column));
-              Console.WriteLine("=> Created tile #" + tileCount + " at Row " + tilePosition.Row + ", Col " + tilePosition.Column);
-            }
-            else
-            {
-              return;
-            }
             break;
           }
         default:
@@ -177,7 +150,21 @@ namespace TileCreator
             break;
           }
       }
-      return;
+      return tilePosition;
+    }
+
+    public static void CreateTile(Cell tilePosition)
+    {
+      if(ValidateOccupiedCells(tilePosition))
+      {
+        tileCount++;
+        occupiedCells.Add(new Cell(tilePosition.Row, tilePosition.Column));
+        Console.WriteLine("=> Created tile #" + tileCount + " at Row " + tilePosition.Row + ", Col " + tilePosition.Column);
+      }
+      else
+      {
+        return;
+      }
     }
 
   }
