@@ -9,26 +9,26 @@ namespace TileCreator
     {
       try
       {
-        Grid grid = new Grid();
+        IGrid grid = new Grid();
         grid.ReadWidthAndHeight();
         grid.ReadStartPosition();
 
-        TileManager tileManager = new TileManager();
+        ITileManager tileManager = new TileManager();
         tileCount = tileManager.CreateTile(new Cell(grid.CellPosition), tileCount);
         tileManager.MoveCount++;
         tileManager.ShowCurrent(grid.CellPosition);
 
         do
         {
-          foreach (var item in tileManager.movementSequence)
+          foreach (var item in tileManager.GetMovementSequence())
           {
             if (tileManager.MoveCount > 25)
             {
               Console.WriteLine("\nTraversal is complete\n");
               break;
             }
-            Console.WriteLine("\nAttempting to move " + item.ToString());
 
+            Console.WriteLine("\nAttempting to move " + item.ToString());
             grid.CellPosition = tileManager.Move(item, grid.CellPosition);
             if (grid.ValidateCell())
             {

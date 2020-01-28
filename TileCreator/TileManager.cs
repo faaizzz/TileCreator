@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace TileCreator
 {
-  class TileManager : ITileManager
+  internal class TileManager : ITileManager
   {
     public enum Position
     {
@@ -27,6 +27,11 @@ namespace TileCreator
           Position.Right, Position.Down, Position.Left,Position.Right, Position.Left,Position.Left,Position.Down,
           Position.Right,Position.Up,Position.Down,Position.Left
         };
+    }
+
+    public IEnumerable<Position> GetMovementSequence()
+    {
+      return movementSequence;
     }
 
     public bool ValidateOccupiedCells(Cell tilePosition)
