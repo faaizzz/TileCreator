@@ -2,6 +2,12 @@
 {
   class Cell
   {
+    public Cell(Cell cell)
+    {
+      Row = cell.Row;
+      Column = cell.Column;
+    }
+
     public Cell(uint row, uint column)
     {
       Row = row;
