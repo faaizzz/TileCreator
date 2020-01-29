@@ -10,5 +10,6 @@ namespace TileCreator
     void ShowCurrent(Cell tilePosition);
     bool ValidateOccupiedCells(Cell tilePosition);
     IEnumerable<TileManager.Position> GetMovementSequence();
+    bool ValidateMaxMovementCompleted();
   }
 }

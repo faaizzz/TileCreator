@@ -39,6 +39,16 @@ namespace TileCreator
       return !occupiedCells.Any(x => x.Column == tilePosition.Column && x.Row == tilePosition.Row);
     }
 
+    public bool ValidateMaxMovementCompleted()
+    {
+      if (MoveCount > 25)
+      {
+        Console.WriteLine("\nTraversal is complete\n");
+        return true;
+      }
+      return false;
+    }
+
     public byte CreateTile(Cell tilePosition, byte tileCount)
     {
       if (ValidateOccupiedCells(tilePosition))
@@ -57,6 +67,7 @@ namespace TileCreator
 
     public Cell Move(Position item, Cell tilePosition)
     {
+      Console.WriteLine("\nAttempting to move " + item.ToString());
       MoveCount++;
       switch (item)
       {

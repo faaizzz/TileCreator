@@ -22,13 +22,10 @@ namespace TileCreator
         {
           foreach (var item in tileManager.GetMovementSequence())
           {
-            if (tileManager.MoveCount > 25)
+            if (tileManager.ValidateMaxMovementCompleted())
             {
-              Console.WriteLine("\nTraversal is complete\n");
               break;
             }
-
-            Console.WriteLine("\nAttempting to move " + item.ToString());
             grid.CellPosition = tileManager.Move(item, grid.CellPosition);
             if (grid.ValidateCell())
             {
