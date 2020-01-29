@@ -15,7 +15,7 @@ namespace TileCreator
 
         ITileManager tileManager = new TileManager();
         tileManager.CreateTile(new Cell(grid.CellPosition));
-        tileManager.moveCount++;
+        tileManager.IncrementMoveCount();
         tileManager.ShowCurrent(grid.CellPosition);
         tileManager.Build(grid);
 

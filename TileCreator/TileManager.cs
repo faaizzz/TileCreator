@@ -13,16 +13,14 @@ namespace TileCreator
       Up,
       Down
     }
-    public byte moveCount { get; set; }
-    //public byte TileCount { get; set; }
-    public IList<Cell> occupiedCells;
-    public IEnumerable<Position> movementSequence;
+    private byte MoveCount { get; set; }
+    public IList<Cell> OccupiedCells;
+    public IEnumerable<Position> MovementSequence;
     public TileManager()
     {
-      moveCount = 0;
-      //TileCount = 0;
-      occupiedCells = new List<Cell>();
-      movementSequence = new List<Position>
+      MoveCount = 0;
+      OccupiedCells = new List<Cell>();
+      MovementSequence = new List<Position>
         {
           Position.Right, Position.Down, Position.Left,Position.Right, Position.Left,Position.Left,Position.Down,
           Position.Right,Position.Up,Position.Down,Position.Left
@@ -31,17 +29,22 @@ namespace TileCreator
 
     public IEnumerable<Position> GetMovementSequence()
     {
-      return movementSequence;
+      return MovementSequence;
+    }
+
+    public void IncrementMoveCount()
+    {
+      MoveCount++;
     }
 
     public bool ValidateOccupiedCells(Cell tilePosition)
     {
-      return !occupiedCells.Any(x => x.Column == tilePosition.Column && x.Row == tilePosition.Row);
+      return !OccupiedCells.Any(x => x.Column == tilePosition.Column && x.Row == tilePosition.Row);
     }
 
     public bool ValidateMaxMovementCompleted()
     {
-      if (moveCount > 25)
+      if (MoveCount > 25)
       {
         Console.WriteLine("\nTraversal is complete\n");
         return true;
@@ -54,7 +57,7 @@ namespace TileCreator
       if (ValidateOccupiedCells(tilePosition))
       {
         TileBuilder.tileCount++;
-        occupiedCells.Add(new Cell(tilePosition));
+        OccupiedCells.Add(new Cell(tilePosition));
         Console.WriteLine("=> Created tile #" + TileBuilder.tileCount + " at Row " + tilePosition.Row + ", Col " + tilePosition.Column);
       }
     }
@@ -67,7 +70,7 @@ namespace TileCreator
     public Cell Move(Position item, Cell tilePosition)
     {
       Console.WriteLine("\nAttempting to move " + item.ToString());
-      moveCount++;
+      IncrementMoveCount();
       switch (item)
       {
         case Position.Right:
@@ -119,7 +122,7 @@ namespace TileCreator
           ShowCurrent(grid.CellPosition);
         }
       }
-      while (moveCount <= 25);
+      while (MoveCount <= 25);
     }
   }
 }

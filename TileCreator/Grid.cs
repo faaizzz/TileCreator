@@ -4,8 +4,8 @@ namespace TileCreator
 {
   internal class Grid : IGrid
   {
-    public uint Width { get; set; }
-    public uint Height { get; set; }
+    private uint Width { get; set; }
+    private uint Height { get; set; }
     public Cell CellPosition { get; set; }
     public Grid()
     {
@@ -13,8 +13,8 @@ namespace TileCreator
 
     public Grid(uint width, uint height)
     {
-      this.Width = width;
-      this.Height = height;
+      Width = width;
+      Height = height;
     }
 
     public bool ValidateCell()

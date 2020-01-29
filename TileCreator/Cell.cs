@@ -1,6 +1,6 @@
 ﻿namespace TileCreator
 {
-  internal class Cell : ICell
+  internal class Cell
   {
     public Cell(Cell cell)
     {
