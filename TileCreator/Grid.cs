@@ -13,8 +13,8 @@ namespace TileCreator
 
     public Grid(uint width, uint height)
     {
-      Width = width;
-      Height = height;
+      this.Width = width;
+      this.Height = height;
     }
 
     public bool ValidateCell()
@@ -49,8 +49,8 @@ namespace TileCreator
         Console.WriteLine("Invalid Entry!");
         return ReadHeight();
       }
-      Height = height;
-      return Height;
+      this.Height = height;
+      return this.Height;
     }
 
     private uint ReadWidth()
@@ -69,8 +69,8 @@ namespace TileCreator
         Console.WriteLine("Invalid Entry!");
         return ReadWidth();
       }
-      Width = width;
-      return Width;
+      this.Width = width;
+      return this.Width;
     }
 
     public Cell ReadStartPosition()

@@ -2,9 +2,9 @@
 
 namespace TileCreator
 {
-  public class Program
+  public class TileBuilder
   {
-    static byte tileCount = 0;
+    public static byte tileCount = 0;
     static void Main(string[] args)
     {
       try
@@ -14,31 +14,11 @@ namespace TileCreator
         grid.ReadStartPosition();
 
         ITileManager tileManager = new TileManager();
-        tileCount = tileManager.CreateTile(new Cell(grid.CellPosition), tileCount);
-        tileManager.MoveCount++;
+        tileManager.CreateTile(new Cell(grid.CellPosition));
+        tileManager.moveCount++;
         tileManager.ShowCurrent(grid.CellPosition);
+        tileManager.Build(grid);
 
-        do
-        {
-          foreach (var item in tileManager.GetMovementSequence())
-          {
-            if (tileManager.ValidateMaxMovementCompleted())
-            {
-              break;
-            }
-            grid.CellPosition = tileManager.Move(item, grid.CellPosition);
-            if (grid.ValidateCell())
-            {
-              tileCount = tileManager.CreateTile(grid.CellPosition, tileCount);
-            }
-            else
-            {
-              return;
-            }
-            tileManager.ShowCurrent(grid.CellPosition);
-          }
-        }
-        while (tileManager.MoveCount <= 25);
       }
       catch (Exception exception)
       {
